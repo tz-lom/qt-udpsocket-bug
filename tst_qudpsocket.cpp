@@ -48,11 +48,13 @@ void tst_QUdpSocket::missedBroadcastHost()
     QByteArray datagram;
     datagram.resize(serverSocket.pendingDatagramSize());
     // datagram.resize(testMessage.size());  this method did not affect the result
-    QHostAddress host;
-    QCOMPARE(serverSocket.readDatagram(datagram.data(), datagram.size(), &host), testMessage.size());
+    QHostAddress senderHost;
+    quint16 senderPort = 0;
+    QCOMPARE(serverSocket.readDatagram(datagram.data(), datagram.size(), &senderHost, &senderPort), testMessage.size());
 
     QCOMPARE(datagram, testMessage);
-    QVERIFY(!host.isNull());
+    QCOMPARE(senderPort, port);
+    QVERIFY(!senderHost.isNull());
 }
 
 QTEST_MAIN(tst_QUdpSocket)
